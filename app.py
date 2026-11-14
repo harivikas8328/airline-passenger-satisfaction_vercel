@@ -4,8 +4,8 @@ import requests
 
 st.set_page_config(page_title="Quick Passenger Predictor", layout="centered")
 
-API_URL = "https://airline-passenger-satisfaction-1-aklg.onrender.com/predict"
-
+# API_URL = "https://airline-passenger-satisfaction-1-aklg.onrender.com/predict"
+API_URL="https://<your-vercel-project>.vercel.app/predict"
 st.title("✈️ Quick Passenger Predictor")
 st.write("A lightweight model using the top 8 predictive features.")
 
