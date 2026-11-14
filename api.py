@@ -1,5 +1,5 @@
-
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import joblib
 import pandas as pd
@@ -8,7 +8,6 @@ app = FastAPI(title="Airline Passenger Satisfaction API")
 
 # Load trained ML pipeline
 model = joblib.load("models/model_pipeline.pkl")
-
 
 class PassengerData(BaseModel):
     Type_of_Travel: str
@@ -20,20 +19,14 @@ class PassengerData(BaseModel):
     Seat_comfort: int
     Leg_room_service: int
 
-
+# Serve the HTML frontend
 @app.get("/")
-def home():
-    return {"message": "Airline Satisfaction API is running!"}
+def serve_frontend():
+    return FileResponse("index.html")
 
-
-@app.get("/health")
-def health():
-    return {"status": "healthy"}
-
-
+# Handle the API prediction
 @app.post("/predict")
 def predict_satisfaction(data: PassengerData):
-
     try:
         data_dict = data.model_dump()
 
@@ -44,7 +37,6 @@ def predict_satisfaction(data: PassengerData):
         }
 
         df = pd.DataFrame([data_dict])
-
         prediction = model.predict(df)
 
         return {
